@@ -1,0 +1,95 @@
+import "./styles.css";
+import React, { useState } from 'react';
+
+export default function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isNewUser, setIsNewUser] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [registeredUsers, setRegisteredUsers] = useState([]);
+
+  const handleRegister = () => {
+    // add new user to list of registered users
+    setRegisteredUsers([...registeredUsers, { username, password }]);
+    
+  };
+
+  const handleLogin = () => {
+    // check if username and password match any registered users
+    const user = registeredUsers.find((user) => user.username === username && user.password === password);
+    if (user) {
+      setLoggedIn(true);
+
+    }
+    console.log(registeredUsers)
+  };
+
+  const handleLogout = () => {
+    setLoggedIn(false);
+  };
+
+  const handleRegisterSubmit = (event) => {
+    event.preventDefault();
+    handleRegister();
+  };
+
+  const handleLoginSubmit = (event) => {
+    event.preventDefault();
+    handleLogin();
+    
+  };
+
+  const handleNewUserClick = () => {
+    setIsNewUser(true);
+    console.log("new clicked")
+  };
+
+  const handleExistingUserClick = () => {
+    setIsNewUser(false);
+  };
+
+  if (loggedIn) {
+    return (
+      <div>
+        <p>Welcome, {username}!</p>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+    );
+  }
+
+  if (isNewUser) {
+    return (
+      <form onSubmit={handleRegisterSubmit}>
+        <label>
+          Username:
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </label>
+        <br />
+        <button type="submit" >Register</button>
+        <button onClick={handleExistingUserClick}> Existing User? Login Here</button>
+      </form>
+    );
+  }
+
+  return (
+    <form onSubmit={handleLoginSubmit}>
+      <label>
+        Username:
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+      </label>
+      <br />
+      <label>
+        Password:
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      </label>
+      <br />
+      <button onClick={handleLogin}>Login</button>
+      <button onClick={handleNewUserClick}>New User?  Register Here</button>
+    </form>
+  );
+}
