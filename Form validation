@@ -1,0 +1,72 @@
+import "./styles.css";
+import React, { useState } from 'react';
+export default function App() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [formErrors, setFormErrors] = useState([]);
+
+  const validateForm = () => {
+    const errors = [];
+
+    if (!name) {
+      errors.push('Name is required');
+    }
+
+    if (!email) {
+      errors.push('Email is required');
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.push('Email is invalid');
+    }
+
+    if (!password) {
+      errors.push('Password is required');
+    } else if (password.length < 6) {
+      errors.push('Password must be at least 6 characters');
+    }
+
+    if (password !== confirmPassword) {
+      errors.push('Passwords do not match');
+    }
+
+    setFormErrors(errors);
+    return errors.length === 0;
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (validateForm()) {
+      // Submit the form data to the server
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Name:</label>
+        <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
+      </div>
+      <div>
+        <label>Email:</label>
+        <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+      </div>
+      <div>
+        <label>Password:</label>
+        <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+      </div>
+      <div>
+        <label>Confirm Password:</label>
+        <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} />
+      </div>
+      {formErrors.length > 0 && (
+        <ul>
+          {formErrors.map((error, index) => (
+            <li key={index}>{error}</li>
+          ))}
+        </ul>
+      )}
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
