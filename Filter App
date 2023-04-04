@@ -1,0 +1,40 @@
+import "./styles.css";
+import React, { useState } from 'react';
+
+const dresses = [
+  { id: 1, category: 'male', name: 'Men\'s shirt' },
+  { id: 2, category: 'male', name: 'Men\'s pants' },
+  { id: 3, category: 'female', name: 'Women\'s dress' },
+  { id: 4, category: 'female', name: 'Women\'s skirt' },
+  { id: 5, category: 'kids', name: 'Kids\'s T-shirt' },
+  { id: 6, category: 'kids', name: 'Kids\'s shorts' },
+];
+
+export default function App() {
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const filteredDresses = selectedCategory === ''
+    ? dresses
+    : dresses.filter((dress) => dress.category === selectedCategory);
+    
+  return (
+    <div className="App">
+       <h1>Dress List</h1>
+      <select value={selectedCategory} onChange={handleCategoryChange}>
+        <option value="">All</option>
+        <option value="male">Men</option>
+        <option value="female">Women</option>
+        <option value="kids">Kids</option>
+      </select>
+      <ul>
+        {filteredDresses.map((dress) => (
+          <li key={dress.id}>{dress.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
