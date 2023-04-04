@@ -1,0 +1,44 @@
+import "./styles.css";
+import React, { useState, useRef } from 'react';
+export default function App() {
+ 
+    const [time, setTime] = useState(0);
+  const intervalRef = useRef(null);
+  const handleStart = () => {
+
+    intervalRef.current = setInterval(() => {
+      setTime((prevTime) => prevTime + 1);
+    }, 10);
+  };
+
+  const handleStop = () => {
+    clearInterval(intervalRef.current);
+  };
+
+  const handleReset = () => {
+    setTime(0);
+  };
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 6000);
+    const seconds = Math.floor((time / 100) % 60);
+    const centiseconds = time % 100;
+    const minutesString = minutes < 10 ? `0${minutes}` : `${minutes}`;
+    const secondsString = seconds < 10 ? `0${seconds}` : `${seconds}`;
+    const centisecondsString = centiseconds < 10 ? `0${centiseconds}` : `${centiseconds}`;
+    return `${minutesString}:${secondsString}.${centisecondsString}`;
+  };
+  
+  return (
+    <div className="App">
+       <h1>Stopwatch</h1>
+      <p>{formatTime(time)}</p>
+      <div className="button-container">
+        
+      <button onClick={handleStart}>Start</button>
+      <button onClick={handleStop}>Stop</button>
+      <button onClick={handleReset}>Reset</button>
+          
+      </div>
+    </div>
+  );
+}
